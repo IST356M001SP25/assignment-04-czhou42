@@ -9,7 +9,7 @@ def get_column_names(df : pd.DataFrame) -> list[str]:
     Get all column names of a pandas dataframe df
     Returns the names as a list of string
     '''
-    pass # todo: replace this line and add your code
+    return list(df.columns)
 
 
 def get_columns_of_type(df : pd.DataFrame, numpy_type: any) -> list[str]:
@@ -17,14 +17,16 @@ def get_columns_of_type(df : pd.DataFrame, numpy_type: any) -> list[str]:
     Return the column names of a pandas dataframe only when 
     the values in the column match the numpy_type
     '''
-    pass # todo: replace this line and add your code
+    return [col for col in df.columns if df[col].dtype == numpy_type]
 
 
 def get_unique_values(df : pd.DataFrame, column_name: str) -> list:
     '''
     Get a list of unique values of a column in a pandas dataframe
     '''
-    pass # todo: replace this line and add your code
+    if column_name in df.columns:
+        return df[column_name].dropna().unique().tolist()
+    return []
 
 def get_file_extension(file_path : str) -> str:
     '''
@@ -34,9 +36,9 @@ def get_file_extension(file_path : str) -> str:
     'countries.json' -> 'json'
 
     '''
-    pass # todo: replace this line and add your code
+    return file_path.split('.')[-1].lower()
 
-def load_file(file_path: str, ext: str) -> pd.DataFrame:
+def load_file(file, file_type: str) -> pd.DataFrame:
     '''
     Load a file into a pandas dataframe assumed the file type from the extension
     return a pandas dataframe
@@ -44,7 +46,14 @@ def load_file(file_path: str, ext: str) -> pd.DataFrame:
     - when csv assume first row is header
     - when json assume record-oriented data
     '''
-    pass # todo: replace this line and add your code
+    if file_type == 'csv':
+        return pd.read_csv(file)
+    elif file_type == 'xlsx':
+        return pd.read_excel(file)
+    elif file_type == 'json':
+        return pd.read_json(file, orient="records")
+    else:
+        raise ValueError("Unsupported file type. Use CSV, XLSX, or JSON.")
 
 if __name__ == '__main__':
     df = pd.DataFrame({ 
